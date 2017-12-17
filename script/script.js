@@ -147,5 +147,40 @@ function bindToListElement(bind) {
 
 // function to load the bind into the center region by its id
 function loadBind(id) {
-    console.log("Loading bind #" + id);
+
+    // load the bind from the binds database
+    let base = db.getBindById(id);
+    if (base == null) return;
+
+    // call the population function on the base element
+    function populate(bind) {
+
+        // re-build the bind object to prevent errors
+        let ret = {
+            id: bind.id,
+            name: bind.name,
+            level: bind.level,
+            cost: bind.cost,
+            end: bind.end,
+        };
+
+        // go through all of the requirements and add then to the new object
+        let arr = [];
+        for (let i = 0; i < bind.requirements.length; i ++) {
+            // do nothing for now, but call this function recursively
+            let b = db.getBindById(bind.requirements[i]);
+            arr.push(populate(b));
+        }
+        
+        // return the newly constructed "ret" object
+        ret.requirements = arr;
+        return ret;
+
+    };
+
+    // populate the base 
+    base = populate(base);
+
+    // translate the bind tree to a DOM element
+
 }
