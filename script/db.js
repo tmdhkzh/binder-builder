@@ -1172,6 +1172,24 @@ db = {
 };
 
 /// <summary>
+/// Function that will attempt to get the specified bind by its id.
+/// </summary>
+/// <param name="id" type="Number">The id of the bind.</param>
+/// <returns type="Object">The bind object, or null if not found.</returns>
+db.getBindById = function(id) {
+
+    // go through all the binds in the database
+    for (i = 0; i < db.binds.length; i ++) {
+        if (db.binds[i].id == id) 
+            return db.binds[i];
+    }
+
+    // return null if no matches were found
+    return null;
+
+}
+
+/// <summary>
 /// Function that will attempt to get the id of the specified bind by searching
 /// for their name in the database.
 /// </summary>
@@ -1180,26 +1198,13 @@ db = {
 db.getIdByName = function(name){
 
     // iterate over each bind in the database
-    for (i=0; i<db.binds.length; i++) {
+    for (i = 0; i < db.binds.length; i ++) {
         if (db.binds[i].name.equalIgnoreCase(name))
             return db.binds[i].id;
     }
 
     // if no matches are found, return -1.
     return -1;
-
-};
-
-/// <summary>
-/// Function that will attempt to get as many binds as possible by the entered
-/// search string.
-/// </summary>
-/// <param name="str" type="String">The search string.</param>
-/// <returns type="Number">An array of matching binds.</returns>
-db.getBindsBySearch = function(str) {
-
-    // array that holds the results of the search
-    let arr = [];
 
 };
 

@@ -35,16 +35,24 @@
         <a class="item active" data-tab="search">Search</a>
         <a class="item" data-tab="browse">Browse</a>
       </div>
+      <!-- Search Tab -->
       <div class="ui bottom attached tab segment active" data-tab="search">
         <div class="ui sub header">Search Criteria</div>
         <div class="ui fluid input">
           <input id="binding-search-text-input" placeholder="Search..." type="text">
         </div>
+        <div class="ui sub header">Sort Criteria</div>
+        <select id="binding-search-sort-select" class="ui fluid normal dropdown">
+          <option value="0">Relevancy</option>
+          <option value="1">Bind Level</option>
+          <option value="2">Alphabetical</option>
+        </select>
         <br>
         <hr>
-        <div id="binding-search-list" class="ui list">
+        <div id="binding-search-list" class="ui relaxed divided list">
         </div>
       </div>
+      <!-- Browse Tab -->
       <div class="ui bottom attached tab segment" data-tab="browse">
         <div class="ui sub header">Binding Level Selection</div>
         <select multiple id="binding-browse-level-select" class="ui fluid normal dropdown">
@@ -71,7 +79,7 @@
         </div>
         <br>
         <hr>
-        <div id="binding-browse-list" class="ui list">
+        <div id="binding-browse-list" class="ui relaxed divided list">
         </div>
       </div>
     </div>

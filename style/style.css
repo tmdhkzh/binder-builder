@@ -11,3 +11,15 @@ body {
     margin-bottom: 0px;
     overflow-y: hidden;
 }
+
+div .hoverable {
+    cursor: pointer;
+}
+
+div .end-bind {
+    color: #a52a2a !important;
+}
+
+div .bind {
+    color: #0e6eb8 !important;
+}
