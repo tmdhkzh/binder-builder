@@ -1,0 +1,13 @@
+body {
+    padding: 0px !important;
+}
+
+#left-sidebar {
+    padding: 14px;
+}
+
+#body-container {
+    margin-top: 0px;
+    margin-bottom: 0px;
+    overflow-y: hidden;
+}
