@@ -51,6 +51,9 @@ function updateSearchTabList() {
     let binds = [];
     res.forEach(function(pair) {
 
+        // check that the minimum pairing is met
+        if (pair[0] < 0.40) return;
+
         // get the bind by obtaining its name and id
         let id = db.getIdByName(pair[1]);
         let bind = db.getBindById(id);
@@ -167,7 +170,6 @@ function loadBind(id) {
         // go through all of the requirements and add then to the new object
         let arr = [];
         for (let i = 0; i < bind.requirements.length; i ++) {
-            // do nothing for now, but call this function recursively
             let b = db.getBindById(bind.requirements[i]);
             arr.push(populate(b));
         }
