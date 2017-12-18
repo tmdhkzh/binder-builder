@@ -151,6 +151,9 @@ function bindToListElement(bind) {
 // function to load the bind into the center region by its id
 function loadBind(id) {
 
+    // clear the binding instructiosn textarea
+    $('#binding-instructions-area').text('');
+
     // load the bind from the binds database
     let base = db.getBindById(id);
     if (base == null) return;
@@ -183,6 +186,57 @@ function loadBind(id) {
     // populate the base 
     base = populate(base);
 
-    // translate the bind tree to a DOM element
+    // function that translates the bind tree into a text representation
+    function bind2dom(bind) {
+
+        // array to return at the end of the function call
+        let arr = [];
+
+        // cover base case that the specified bind does not have any other
+        // binds required to build it
+        if (bind.level == 1) {
+            arr.push('─ ' + bind.name);
+            return arr;
+        }
+
+        // add the name of the element
+        arr.push('┐ ' + bind.name);
+
+        // add each child element
+        for (let i = 0; i < bind.requirements.length; i ++) {
+
+            // get the sub elements to add to the current list
+            let tmp = bind2dom(bind.requirements[i]);
+
+            // handle if this is the last element in the requirements array
+            if (i == bind.requirements.length - 1) {
+                // add each of the sub-elements
+                arr.push('└─' + tmp[0]);
+                for (let j = 1; j < tmp.length; j ++) {
+                    arr.push('  ' + tmp[j]);
+                }
+            }
+
+            // handle if this is not the last element in the requirements array
+            else {
+                // add each of the sub-elements
+                arr.push('├' + tmp[0]);
+                for (let j = 1; j < tmp.length; j ++) {
+                    arr.push('│ ' + tmp[j]);
+                }
+            }
+
+        }
+
+        // return the array to the caller
+        return arr;
+
+    }
+
+    // convert the object to text and add it to the text area
+    let str = bind2dom(base);
+    str.forEach(function(s) {
+        $('#binding-instructions-area').append(s).append('\n');
+    });
 
 }
