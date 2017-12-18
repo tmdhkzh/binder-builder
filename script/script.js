@@ -220,7 +220,7 @@ function loadBind(id) {
             // handle if this is not the last element in the requirements array
             else {
                 // add each of the sub-elements
-                arr.push('├' + tmp[0]);
+                arr.push('├─' + tmp[0]);
                 for (let j = 1; j < tmp.length; j ++) {
                     arr.push('│ ' + tmp[j]);
                 }
