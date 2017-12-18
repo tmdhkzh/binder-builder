@@ -25,122 +25,6 @@ db = {
             cost: 0,
             end: false,
             requirements: [ 1, 1, 1 ],
-        }, {
-            id: 3,
-            name: "Footman",
-            level: 2,
-            cost: 4000,
-            end: false,
-            requirements: [ 1 ],
-        }, {
-            id: 4,
-            name: "Lap Dog",
-            level: 2,
-            cost: 3000,
-            end: false,
-            requirements: [ 1 ],
-        }, {
-            id: 5,
-            name: "Apprentice",
-            level: 2,
-            cost: 5000,
-            end: false,
-            requirements: [ 1 ],
-        }, {
-            id: 6,
-            name: "Flame Apprentice",
-            level: 2,
-            cost: 6000,
-            end: false,
-            requirements: [ 1 ],
-        }, {
-            id: 7,
-            name: "Archer",
-            level: 2,
-            cost: 4000,
-            end: false,
-            requirements: [ 1 ],
-        }, {
-            id: 8,
-            name: "Raccoon",
-            level: 2,
-            cost: 3000,
-            end: false,
-            requirements: [ 1 ],
-        }, {
-            id: 9,
-            name: "Rock Golem",
-            level: 2,
-            cost: 5000,
-            end: false,
-            requirements: [ 1 ],
-        }, {
-            id: 10,
-            name: "Toad Man",
-            level: 2,
-            cost: 6000,
-            end: false,
-            requirements: [ 1 ],
-        },
-
-        ///////////////////////////////
-        // Level 3 Binds
-        {
-            id: 11,
-            name: "Captain",
-            level: 3,
-            cost: 12000,
-            end: false,
-            requirements: [ 3 ],
-        }, {
-            id: 12,
-            name: "Hunting Dog",
-            level: 3,
-            cost: 10000,
-            end: false,
-            requirements: [ 4 ],
-        }, {
-            id: 13,
-            name: "Wizard",
-            level: 3,
-            cost: 14000,
-            end: false,
-            requirements: [ 5 ],
-        }, {
-            id: 14,
-            name: "Flame Conjurer",
-            level: 3,
-            cost: 15000,
-            end: false,
-            requirements: [ 6 ],
-        }, {
-            id: 15,
-            name: "Rifleman",
-            level: 3,
-            cost: 12000,
-            end: false,
-            requirements: [ 7 ],
-        }, {
-            id: 16,
-            name: "Pack Mule",
-            level: 3,
-            cost: 10000,
-            end: false,
-            requirements: [ 8 ],
-        }, {
-            id: 17,
-            name: "Stone Golem",
-            level: 3,
-            cost: 14000,
-            end: false,
-            requirements: [ 9 ],
-        }, {
-            id: 18,
-            name: "Sea Turtle",
-            level: 3,
-            cost: 15000,
-            end: false,
-            requirements: [ 10 ],
         },
         
         ///////////////////////////////
@@ -156,72 +40,72 @@ db = {
             id: 20,
             name: "Hazardous Chemical",
             level: 4,
-            cost: 25000,
+            cost: 28000,
             end: false,
-            requirements: [ 1 ],
+            requirements: [ ],
         }, {
             id: 21,
             name: "Mystical Eye",
             level: 4,
-            cost: 58000,
+            cost: 61000,
             end: false,
-            requirements: [ 1 ],
+            requirements: [ ],
         }, {
             id: 22,
             name: "Knight",
             level: 4,
-            cost: 28000,
+            cost: 47000,
             end: false,
-            requirements: [ 11 ],
+            requirements: [ ],
         }, {
             id: 23,
             name: "Dire Wolf",
             level: 4,
-            cost: 25000,
+            cost: 43000,
             end: false,
-            requirements: [ 12 ],
+            requirements: [ ],
         }, {
             id: 24,
             name: "Magician",
             level: 4,
-            cost: 31000,
+            cost: 53000,
             end: false,
-            requirements: [ 13 ],
+            requirements: [ ],
         }, {
             id: 25,
             name: "Disciple of Fire",
             level: 4,
-            cost: 33000,
+            cost: 57000,
             end: false,
-            requirements: [ 14 ],
+            requirements: [ ],
         }, {
             id: 26,
             name: "Marine",
             level: 4,
-            cost: 28000,
+            cost: 47000,
             end: false,
-            requirements: [ 15 ],
+            requirements: [ ],
         }, {
             id: 27,
             name: "Horse",
             level: 4,
-            cost: 25000,
+            cost: 41000,
             end: false,
-            requirements: [ 16 ],
+            requirements: [ ],
         }, {
             id: 28,
             name: "Steel Golem",
             level: 4,
-            cost: 31000,
+            cost: 53000,
             end: false,
-            requirements: [ 17 ],
+            requirements: [ ],
         }, {
             id: 29,
             name: "Sea Lord",
             level: 4,
-            cost: 33000,
+            cost: 57000,
             end: false,
-            requirements: [ 18 ],
+            requirements: [ ],
         },
 
         ///////////////////////////////
@@ -1207,6 +1091,30 @@ db.getIdByName = function(name){
     return -1;
 
 };
+
+/// <summary>
+/// Function that will get the total cost for a bind given the bind's id.
+/// </summary>
+/// <param name="id" type="Number">The id of the bind.</param>
+/// <returns type="Number">The total cost, -1 if error.</returns>
+db.getTotalBindCost = function(id) {
+
+    // keep a running total for the cost
+    let cost = 0;
+
+    // get the current bind and add the bind's cost to this
+    let bind = db.getBindById(id);
+    cost += bind.cost;
+
+    // get the cost of all the bind's requirements
+    bind.requirements.forEach(function(req) {
+        cost += db.getTotalBindCost(req);
+    });
+
+    // return the total cost of the unit
+    return cost;
+
+}
 
 // String prototype helper method for case-insensitive comparison
 String.prototype.equalIgnoreCase = function(str) {

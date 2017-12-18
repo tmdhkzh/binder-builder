@@ -78,9 +78,17 @@ function updateSearchTabList() {
         }
 
         // handle if sort criteria is 2 (alphabetical)
-        else {
+        else if (criteria == 2) {
             return bind1.name > bind2.name;
         }
+
+        // handle if sort criteria is 3 (cost)
+        else if (criteria == 3) {
+            return db.getTotalBindCost(bind1.id) > db.getTotalBindCost(bind2.id);
+        }
+
+        // default case - should never happen
+        return false;
 
     });
     
@@ -140,8 +148,10 @@ function bindToListElement(bind) {
         element += '<div class="bind header">' + bind.name + '</div>';
     }
 
-    // tack on the level description for the bind
-    element += '<div class="description">Level ' + bind.level + ' Bind</div></div></div>';
+    // tack on the level description and total cost for the bind
+    element += '<div class="description">Level ' + bind.level + ' Bind</div>';
+    element += '<div class="description">Total Cost: ' + db.getTotalBindCost(bind.id) + 'g</div>';
+    element += '</div></div>';
 
     // return the constructed element
     return element;
@@ -157,6 +167,10 @@ function loadBind(id) {
     // load the bind from the binds database
     let base = db.getBindById(id);
     if (base == null) return;
+
+    // add the total cost of the bind to the instructions sheet
+    $('#binding-instructions-area').append('Total bind cost: ');
+    $('#binding-instructions-area').append(db.getTotalBindCost(id) + 'g\n\n');
 
     // call the population function on the base element
     function populate(bind) {
@@ -194,13 +208,15 @@ function loadBind(id) {
 
         // cover base case that the specified bind does not have any other
         // binds required to build it
-        if (bind.level == 1) {
+        if (bind.requirements.length == 0) {
             arr.push('─ ' + bind.name);
+            arr.push('  ');
             return arr;
         }
 
         // add the name of the element
-        arr.push('┐ ' + bind.name);
+        arr.push('┬ ' + bind.name);
+        arr.push('│ ');
 
         // add each child element
         for (let i = 0; i < bind.requirements.length; i ++) {
@@ -211,18 +227,18 @@ function loadBind(id) {
             // handle if this is the last element in the requirements array
             if (i == bind.requirements.length - 1) {
                 // add each of the sub-elements
-                arr.push('└─' + tmp[0]);
+                arr.push('└──' + tmp[0]);
                 for (let j = 1; j < tmp.length; j ++) {
-                    arr.push('  ' + tmp[j]);
+                    arr.push('   ' + tmp[j]);
                 }
             }
 
             // handle if this is not the last element in the requirements array
             else {
                 // add each of the sub-elements
-                arr.push('├─' + tmp[0]);
+                arr.push('├──' + tmp[0]);
                 for (let j = 1; j < tmp.length; j ++) {
-                    arr.push('│ ' + tmp[j]);
+                    arr.push('│  ' + tmp[j]);
                 }
             }
 
